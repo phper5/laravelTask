@@ -15,5 +15,7 @@ class TaskServiceProvider  extends ServiceProvider
 
         $route = realpath($raw = __DIR__.'/../routes.php') ?: $raw;
         $this->loadRoutesFrom($route);
+
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
     }
 }

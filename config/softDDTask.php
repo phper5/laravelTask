@@ -7,4 +7,5 @@ return [
     'defaultService'=>'default',
     'response'=>\SoftDD\Task\Response::class,
     'callbackUrl'=>config('app.url').'/api/callback/task/finished',
+    'postTaskUri'=>'/api/tasks'
 ];

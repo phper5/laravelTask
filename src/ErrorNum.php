@@ -12,4 +12,10 @@ class ErrorNum
         'httpCode'=>430,
         'headers'=>[]
     ];
+    const NOT_FOUND = [
+        'code'=>101,
+        'msg'=>'invaild access',
+        'httpCode'=>430,
+        'headers'=>[]
+    ];
 }
