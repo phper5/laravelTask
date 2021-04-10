@@ -1,0 +1,31 @@
+{
+    "name": "softdd/tasks",
+    "description": "任务类",
+    "keywords": ["swagger", "task", "softdd"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "diandisoft",
+            "email": "coder5@qq.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "SoftDD\\Task\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=7.0.0",
+        "zircote/swagger-php": "^3.1",
+        "laravel/framework": "^7|^8"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "SoftDD\\Task\\DocMakerServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
