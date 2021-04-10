@@ -12,7 +12,22 @@ use SoftDD\ApiException\ApiException;
 class TaskController
 {
     /**
-     * 读取一个任务
+     * @OA\Get(
+     *     path="/api/tasks/{taskId}",
+     *     @OA\Response(
+     *       response="404",
+     *       description="没有"
+     *     ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="successful operation",
+     *     @OA\MediaType(
+     *         mediaType="application/json",
+     *         @OA\Schema(ref="#/components/schemas/task"),
+     *     )
+     *     ),
+     * )
+     *
      * @param Request $request
      * @param $id
      * @return \Illuminate\Http\JsonResponse
@@ -33,8 +48,48 @@ class TaskController
             return (new Response())->setData($task->toResponse())->setHeaders(['Cache-Control'=>'no-cache'])->Json();
 
         }
+        throw new ApiException(ErrorNum::NOT_FOUND);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/api/tasks/{taskId}",
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     description="任务参数",
+     *                     property="args",
+     *                     type="string",
+     *                     format="string",
+     *                 ),
+     *                 @OA\Property(
+     *                     description="任务数据",
+     *                     property="input",
+     *                     type="string"
+     *                 ),
+     *                 required={"input"}
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *       response="404",
+     *       description="没有"
+     *     ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="successful operation",
+     *     @OA\MediaType(
+     *         mediaType="application/json",
+     *         @OA\Schema(ref="#/components/schemas/task"),
+     *     )
+     *     ),
+     * )
+     * @param Request $request
+     * @param $taskId
+     * @return mixed
+     */
     public function put(Request $request,$taskId)
     {
         $taskClass =config('softDDTask.model');
@@ -61,6 +116,45 @@ class TaskController
 
     /**
      * 创建一个任务
+     * @OA\Put(
+     *     path="/api/tasks",
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     description="任务参数",
+     *                     property="args",
+     *                     type="string",
+     *                     format="string",
+     *                 ),
+     *                 @OA\Property(
+     *                     description="任务数据",
+     *                     property="input",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     description="服务类型",
+     *                     property="service",
+     *                     type="string"
+     *                 ),
+     *                 required={"input"}
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *       response="430",
+     *       description="没有权限"
+     *     ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="successful operation",
+     *     @OA\MediaType(
+     *         mediaType="application/json",
+     *         @OA\Schema(ref="#/components/schemas/task"),
+     *     )
+     *     ),
+     * )
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -86,6 +180,44 @@ class TaskController
     }
 
     /**
+     * @OA\Get(
+     *     path="/api/tasks",
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     description="页数",
+     *                     property="page",
+     *                     type="integer",
+     *                 ),
+     *                 @OA\Property(
+     *                     description="每页数量",
+     *                     property="pageNum",
+     *                     type="integer",
+     *                 ),
+     *                 @OA\Property(
+     *                     description="服务类型",
+     *                     property="service",
+     *                     type="string"
+     *                 ),
+     *                 required={"input"}
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *       response="430",
+     *       description="没有权限"
+     *     ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="successful operation",
+     *     @OA\MediaType(
+     *         mediaType="application/json",
+     *         @OA\Schema(ref="#/components/schemas/task"),
+     *     )
+     *     ),
+     * )
      * 读取任务列表
      */
     public function getList(Request $request)
@@ -119,6 +251,17 @@ class TaskController
     }
     /**
      * 后台读取一个需要处理的任务
+     * @OA\Get(
+     *     path="/api/crontask",
+     *     @OA\Response(
+     *     response=200,
+     *     description="successful operation",
+     *     @OA\MediaType(
+     *         mediaType="application/json",
+     *         @OA\Schema(ref="#/components/schemas/cronTask"),
+     *     )
+     *     ),
+     * )
      */
     public function getCronTask(Request $request)
     {
@@ -143,7 +286,7 @@ class TaskController
                     ->where('status', $taskStatus::STATUS_BEGIN)
                     ->update(['status' => $taskStatus::STATUS_START])) {
                 $data ['task'] =$task->toResponse();
-                $data ['task']['update_url'] = config('softDDTask.callbackUrl');
+                $data ['updateUrl'] = config('softDDTask.callbackUrl');
                 return (new Response())->setData([$data])->setHeaders(['Cache-Control'=>'no-cache'])->Json();
             }
         }
@@ -152,7 +295,46 @@ class TaskController
     }
 
     /**
-     * 后台更新一个任务
+     * 后台更新任务状态
+     * @OA\Get(
+     *     path="/api/crontask/{taskId}",
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     description="进度",
+     *                     property="progress",
+     *                     type="integer",
+     *                 ),
+     *                 @OA\Property(
+     *                     description="状态",
+     *                     property="status",
+     *                     type="integer",
+     *                 ),
+     *                 @OA\Property(
+     *                     description="中间数据",
+     *                     property="temp",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     description="结果",
+     *                     property="output",
+     *                     type="string"
+     *                 ),
+     *                 required={"input"}
+     *             ),
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *     response=200,
+     *     description="successful operation",
+     *     @OA\MediaType(
+     *         mediaType="application/json",
+     *         @OA\Schema(ref="#/components/schemas/cronTask"),
+     *     )
+     *     ),
+     * )
      */
     public function putCronTask(Request $request,$id)
     {

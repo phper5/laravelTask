@@ -15,7 +15,7 @@ class ErrorNum
     const NOT_FOUND = [
         'code'=>101,
         'msg'=>'invaild access',
-        'httpCode'=>430,
+        'httpCode'=>404,
         'headers'=>[]
     ];
 }
