@@ -287,7 +287,7 @@ class TaskController
                     ->update(['status' => $taskStatus::STATUS_START])) {
                 $data ['task'] =$task->toResponse();
                 $data ['updateUrl'] = config('softDDTask.callbackUrl');
-                return (new Response())->setData([$data])->setHeaders(['Cache-Control'=>'no-cache'])->Json();
+                return (new Response())->setData($data)->setHeaders(['Cache-Control'=>'no-cache'])->Json();
             }
         }
         return (new Response())->setData([])->setHeaders(['Cache-Control'=>'no-cache'])->Json();
