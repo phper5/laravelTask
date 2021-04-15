@@ -20,26 +20,26 @@ class Task extends Model
             $data['progress'] = 100;
         }
         if ($this->args){
-            $args = json_decode($this->args,true);
+            $args = $this->args;
         }else{
             $args=[];
         }
         $data['args'] = $args;
         if ($this->input){
-            $input = json_decode($this->input,true);
+            $input = $this->input;
         }else{
             $input=[];
         }
         $data['input'] = $input;
         if ($this->output){
-            $output = json_decode($this->output,true);
+            $output = $this->output;
         }else{
             $output=[];
         }
         $data['output'] = $output;
 
         if ($this->temp){
-            $temp = json_decode($this->temp,true);
+            $temp = $this->temp;
         }else{
             $temp=[];
         }
