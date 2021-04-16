@@ -116,7 +116,7 @@ class TaskController
 
     /**
      * 创建一个任务
-     * @OA\Put(
+     * @OA\Post(
      *     path="/api/tasks",
      *     @OA\RequestBody(
      *         @OA\MediaType(
@@ -296,7 +296,7 @@ class TaskController
 
     /**
      * 后台更新任务状态
-     * @OA\Get(
+     * @OA\Put(
      *     path="/api/crontask/{taskId}",
      *     @OA\RequestBody(
      *         @OA\MediaType(
