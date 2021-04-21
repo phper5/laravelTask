@@ -22,26 +22,26 @@ class Task extends Model
         if ($this->args){
             $args = $this->args;
         }else{
-            $args=[];
+            $args='';
         }
         $data['args'] = $args;
         if ($this->input){
             $input = $this->input;
         }else{
-            $input=[];
+            $input='';
         }
         $data['input'] = $input;
         if ($this->output){
             $output = $this->output;
         }else{
-            $output=[];
+            $output='';
         }
         $data['output'] = $output;
 
         if ($this->temp){
             $temp = $this->temp;
         }else{
-            $temp=[];
+            $temp='';
         }
         $data['temp'] = $temp;
         return $data;
