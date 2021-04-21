@@ -7,14 +7,20 @@ namespace SoftDD\Task;
 class ErrorNum
 {
     const INVAILD_ACCESS = [
-        'code'=>100,
+        'code'=>14002,
         'msg'=>'invaild access',
         'httpCode'=>430,
         'headers'=>[]
     ];
+    const INVAILD_TOKEN = [
+        'code'=>10001,
+        'msg'=>'invaild token',
+        'httpCode'=>430,
+        'headers'=>[]
+    ];
     const NOT_FOUND = [
-        'code'=>101,
-        'msg'=>'invaild access',
+        'code'=>14001,
+        'msg'=>'not found',
         'httpCode'=>404,
         'headers'=>[]
     ];

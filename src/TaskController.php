@@ -39,6 +39,9 @@ class TaskController
          */
         $taskClass =config('softDDTask.model');
         $user = $request->user('api');
+        if (!$user){
+            throw new ApiException(ErrorNum::INVAILD_TOKEN);
+        }
         if ($task = $taskClass::find($id))
         {
             if ($task->user_id!=$user->getKey())
@@ -95,7 +98,7 @@ class TaskController
         $taskClass =config('softDDTask.model');
         $taskStatus = config('softDDTask.status');
         if (!$user = $request->user('api')){
-            throw new ApiException(ErrorNum::INVAILD_ACCESS);
+            throw new ApiException(ErrorNum::INVAILD_TOKEN);
         }
         $uid = $user->getAuthIdentifier();
         if ($task = $taskClass::where('id',$taskId)->where('user_id',$uid)->first()){
@@ -163,7 +166,7 @@ class TaskController
         $taskClass =config('softDDTask.model');
         $taskStatus = config('softDDTask.status');
         if (!$user = $request->user('api')){
-            throw new ApiException(ErrorNum::INVAILD_ACCESS);
+            throw new ApiException(ErrorNum::INVAILD_TOKEN);
         }
         $uid = $user->getAuthIdentifier();
         $task = new $taskClass();
@@ -223,7 +226,7 @@ class TaskController
     public function getList(Request $request)
     {
         if (!$user = $request->user('api')){
-            throw new ApiException(ErrorNum::INVAILD_ACCESS);
+            throw new ApiException(ErrorNum::INVAILD_TOKEN);
         }
         $uid = $user->getAuthIdentifier();
         $taskClass =config('softDDTask.model');
