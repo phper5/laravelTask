@@ -168,11 +168,15 @@ class TaskController
         if (!$user = $request->user('api')){
             throw new ApiException(ErrorNum::INVAILD_TOKEN);
         }
+        $status = $taskStatus::STATUS_INIT;
+        if ($request->has('status')){
+            $status = $request->has('status');
+        }
         $uid = $user->getAuthIdentifier();
         $task = new $taskClass();
         $task->user_id = $uid;
         $task->id = Uuid::uuid();
-        $task->status =$taskStatus::STATUS_INIT;
+        $task->status = $status;
         $task->progress =0;
         $task->service =$request->get('service',config('softDDTask.defaultService'));
         $task->args =($request->input('args'));
@@ -360,6 +364,7 @@ class TaskController
             if ($output = $request->input('output')){
                 $needUpdated['output'] = $output;
             }
+
             if ($needUpdated){
                 $taskClass::where('id', $task->id)
                     ->where('status', '!=',$taskStatus::STATUS_FINISHED)
