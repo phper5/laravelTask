@@ -54,6 +54,7 @@ class TaskController
         throw new ApiException(ErrorNum::NOT_FOUND);
     }
 
+
     /**
      * @OA\Put(
      *     path="/api/tasks/{taskId}",
@@ -238,10 +239,18 @@ class TaskController
         if ($service = $request->input('service')){
             $conditions['service']  =$service;
         }
-        $page = $request->input('page',1);
-        $pageNum = $request->input('pageNum',10);
-        $list = $taskClass::where($conditions) ->offset($pageNum*($page-1))
-            ->limit($pageNum)->orderBy('created_at', 'DESC')->get();
+
+        $list = $request->input('ids',[]);
+        if ($list){
+            $list = $taskClass::where($conditions) ->whereIn('id',$list)
+                ->orderBy('created_at', 'DESC')->get();
+        }else{
+            $page = $request->input('page',1);
+            $pageNum = $request->input('pageNum',10);
+            $list = $taskClass::where($conditions) ->offset($pageNum*($page-1))
+                ->limit($pageNum)->orderBy('created_at', 'DESC')->get();
+        }
+
         $return = [];
         foreach ($list as $task){
             $return[] = $task->toResponse();
