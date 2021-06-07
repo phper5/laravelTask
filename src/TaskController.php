@@ -279,13 +279,20 @@ class TaskController
             $task=$taskClass::find($testTaskId);
         }
         else{
+            $conditions = [];
+            $conditions['status'] = $taskStatus::STATUS_BEGIN;
             if ($service = $request->input('service'))
             {
-                $task = $taskClass::where('status',$taskStatus::STATUS_BEGIN)->where('service',$service) ->orderBy('created_at', 'ASC')->first();
+                $conditions['service'] = $service;
+
             }
-            else{
-                $task = $taskClass::where('status',$taskStatus::STATUS_BEGIN) ->orderBy('created_at', 'ASC')->first();
+            if ($group = $request->input('group'))
+            {
+                $conditions['group'] = $group;
+
             }
+
+            $task = $taskClass::where($conditions) ->orderBy('created_at', 'ASC')->first();
         }
         if ($task)
         {
@@ -298,7 +305,6 @@ class TaskController
             }
         }
         return (new Response())->setData([])->setHeaders(['Cache-Control'=>'no-cache'])->Json();
-
     }
 
     /**
