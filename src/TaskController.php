@@ -240,8 +240,9 @@ class TaskController
             $conditions['service']  =$service;
         }
 
-        $list = $request->input('ids',[]);
+        $list = $request->input('ids');
         if ($list){
+            $list = json_decode($list,true);
             $list = $taskClass::where($conditions) ->whereIn('id',$list)
                 ->orderBy('created_at', 'DESC')->get();
         }else{
