@@ -24,4 +24,10 @@ class ErrorNum
         'httpCode'=>404,
         'headers'=>[]
     ];
+    const TOO_MANY_TASK = [
+        'code'=>14003,
+        'msg'=>'too many tasks',
+        'httpCode'=>403,
+        'headers'=>[]
+    ];
 }
