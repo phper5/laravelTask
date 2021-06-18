@@ -171,7 +171,7 @@ class TaskController
         }
         $status = $taskStatus::STATUS_INIT;
         if ($request->has('status')){
-            $status = $request->has('status');
+            $status = $request->input('status');
         }
         $uid = $user->getAuthIdentifier();
         $task = new $taskClass();
