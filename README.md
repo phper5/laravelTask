@@ -28,8 +28,8 @@ todo:
  - migration
 
 task
--------------------------
 
+--- | :--- | :---
 status     | int        ｜ 状态 0初始 10准备好可以开始 20开始 30结束 -10错误
 progress   | int        ｜ 进度
 taskId     | string     ｜任务id
